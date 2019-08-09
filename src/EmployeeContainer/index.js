@@ -4,7 +4,15 @@ import CreateEmployee from "../CreateEmployee"
 
 class EmployeeContainer extends Component {
   state={
-    employees: []
+    employees: [],
+    showEditModal: false,
+    employeeToEdit: {
+      name: "",
+      position: "",
+      birthDate: "",
+      department: "",
+      annualSalary: ""
+    }
   };
   componentDidMount(){
     this.getEmployees();
@@ -51,7 +59,7 @@ class EmployeeContainer extends Component {
     return(
       <div>
         <EmployeeList employees={employees} />
-        <CreateEmployee />
+        <CreateEmployee addEmployee={this.addEmployee}/>
       </div>
     )
   };

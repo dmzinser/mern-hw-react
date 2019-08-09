@@ -17,6 +17,14 @@ const Employees = (props) => {
                 <span>Birth Date: {e.birthDate}</span>
                 <span>Department: {e.department}</span>
                 <span>Salary: {e.annualSalary}</span>
+                <div className="button">
+                  <Button type="submit">
+                    Edit Employee
+                  </Button>
+                  <Button type="submit">
+                    Delete Employee
+                  </Button>
+                </div>
                 </li>
               </div>
             </List>
