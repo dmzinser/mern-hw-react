@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import Redirect from "react";
+import { Redirect } from "react-router-dom";
 
 class Register extends Component {
   state={
     username: "",
     password: "",
-    isLogged: false
   };
   handleChange = (e) => {
     this.setState({
@@ -14,27 +13,30 @@ class Register extends Component {
   };
   handleSubmit = async (e) => {
     e.preventDefault();
-    const register = await fetch("http://localhost:9000/auth/register", {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify(this.state),
-      headers: {
-        "Content-Type": "application/json"
+    try {
+      const register = await fetch("http://localhost:9000/auth/register", {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(this.state),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const parsedRegister = await register.json();
+      console.log(parsedRegister)
+      if(parsedRegister.status.message === "User Logged In") {
+        this.props.login(parsedRegister.status.user)
       }
-    });
-    const parsedRegister = await register.json();
-    if(parsedRegister.status.message === "User Logged In") {
-      this.setState({
-        isLogged: true
-      })
+    } catch(err) {
+      console.log(err)
     }
-  }
+  };
   render() {
     return(
       <div>
         {
-          !this.state.isLogged
-              ? <form>
+          !this.props.isLogged
+              ? <form onSubmit={this.handleSubmit}>
                 <label>
                   Username:
                   <input type="text" name="username" onChange={this.handleChange}/>

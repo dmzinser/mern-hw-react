@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import EmployeeList from "../EmployeeList";
 import CreateEmployee from "../CreateEmployee";
 import EditEmployee from "../EditEmployee";
+import { Redirect } from "react-router-dom";
 
 class EmployeeContainer extends Component {
   state={
@@ -127,9 +128,16 @@ class EmployeeContainer extends Component {
     const { employees, showEditModal, employeeToEdit } = this.state
     return(
       <div>
-        <EmployeeList employees={employees} showModal={this.showModal} deleteEmployee={this.deleteEmployee}/>
-        <CreateEmployee addEmployee={this.addEmployee}/>
-        {showEditModal ? <EditEmployee closeAndEdit={this.closeAndEdit} employeeToEdit={employeeToEdit} handleFormChange={this.handleFormChange} /> : null}
+        {
+          this.props.isLogged 
+          ? (
+            <div>
+              <EmployeeList employees={employees} showModal={this.showModal} deleteEmployee={this.deleteEmployee}/>
+              <CreateEmployee addEmployee={this.addEmployee}/>
+              {showEditModal ? <EditEmployee closeAndEdit={this.closeAndEdit} employeeToEdit={employeeToEdit} handleFormChange={this.handleFormChange} /> : null}
+            </div>
+          ) : <Redirect to="/" />
+        }
       </div>
     )
   };
