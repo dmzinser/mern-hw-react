@@ -48,7 +48,7 @@ class Register extends Component {
                 </button>
               </form>
             : <Redirect to="/employee" />
-        }
+          }
       </div>
     )
   }

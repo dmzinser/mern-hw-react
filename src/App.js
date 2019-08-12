@@ -3,6 +3,7 @@ import './App.css';
 import Register from "./Register";
 import { Route, Switch } from "react-router-dom";
 import EmployeeContainer from './EmployeeContainer';
+import Header from "./Header";
 
 const Error404 = () => {
   return(
@@ -15,6 +16,7 @@ const Error404 = () => {
 function App() {
   return (
       <main className="App">
+        <Header />
         <Switch>
           <Route exact path="/" render={() => <Register /> }/>
           <Route exact path="/employee" component={ EmployeeContainer }/>
