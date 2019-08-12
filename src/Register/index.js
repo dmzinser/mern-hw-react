@@ -23,7 +23,6 @@ class Register extends Component {
         }
       });
       const parsedRegister = await register.json();
-      console.log(parsedRegister)
       if(parsedRegister.status.message === "User Logged In") {
         this.props.login(parsedRegister.status.user)
       }
