@@ -17,7 +17,8 @@ const Error404 = () => {
 class App extends Component {
   state={
     user: {},
-    isLogged: false
+    isLogged: false,
+    admin: false
   };
   loginHandler = (u) => {
     this.setState({
@@ -40,7 +41,7 @@ class App extends Component {
     }
   };
   render() {
-    const { isLogged, user } = this.state
+    const { isLogged, user, admin } = this.state
     return (
         <main className="App">
           <Head logout={this.logoutHandler} isLogged={isLogged} login={this.loginHandler}/>

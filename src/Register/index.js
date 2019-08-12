@@ -5,6 +5,7 @@ class Register extends Component {
   state={
     username: "",
     password: "",
+    admin: false
   };
   handleChange = (e) => {
     this.setState({
@@ -43,6 +44,10 @@ class Register extends Component {
                 <label>
                   Password:
                   <input type="password" name="password" onChange={this.handleChange}/>
+                </label>
+                <label>
+                  Admin
+                  <input type="checkbox" name="admin" onChange={this.handleChange}/>
                 </label>
                 <button type="submit">
                   Sign Up!
