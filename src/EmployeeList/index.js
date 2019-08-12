@@ -10,7 +10,7 @@ const Employees = (props) => {
         {employees.map((e) => {
           return (
             <List>
-              <div role="list" class="ui list">
+              <div role="list" className="ui list">
                 <li key={e._id}>
                 <span>Name: {e.name}</span><br />
                 <span>Position: {e.position}</span>
@@ -18,10 +18,10 @@ const Employees = (props) => {
                 <span>Department: {e.department}</span>
                 <span>Salary: {e.annualSalary}</span>
                 <div className="button">
-                  <Button type="submit">
+                  <Button onClick={props.showModal.bind(null, e)} type="submit">
                     Edit Employee
                   </Button>
-                  <Button type="submit">
+                  <Button onClick={() => props.deleteEmployee(e._id)} type="submit">
                     Delete Employee
                   </Button>
                 </div>

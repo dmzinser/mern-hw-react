@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import EmployeeList from "../EmployeeList";
-import CreateEmployee from "../CreateEmployee"
+import CreateEmployee from "../CreateEmployee";
+import EditEmployee from "../EditEmployee";
 
 class EmployeeContainer extends Component {
   state={
@@ -54,12 +55,81 @@ class EmployeeContainer extends Component {
       console.log(err, "getEmployees ERROR")
     }
   };
+  handleFormChange = (e) => {
+    this.setState({
+      employeeToEdit: {
+        ...this.state.employeeToEdit,
+        [e.target.name]: e.target.value
+      }
+    });
+  };
+  showModal = async (employee) => {
+    this.setState({
+      employeeToEdit: employee,
+      showEditModal: !this.state.showEditModal
+    });
+  };
+  closeAndEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const editRequest = await fetch(`http://localhost:9000/api/v1/employee/${this.state.employeeToEdit._id}`, {
+        method: "PUT",
+        body: JSON.stringify(this.state.employeeToEdit),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      if(editRequest.status !== 200) {
+        throw Error("Edit Request NOT Working")
+      }
+      const editResponse = await editRequest.json();
+      const editedEmployeeArray = this.state.employees.map((employee) => {
+        if(employee._id === editResponse.data._id){
+          employee = editResponse.data
+        }
+        return employee
+      });
+      this.setState({
+        employees: editedEmployeeArray,
+        showEditModal: false
+      })
+    } catch(err) {
+      console.log(err, "closeAndEdit ERROR")
+      return err
+    }
+  };
+  deleteEmployee = async (id) => {
+    try {
+      const deleteRequest = await fetch(`http://localhost:9000/api/v1/employee/${id}`, {
+        method: "DELETE",
+        body: JSON.stringify(this.state.employeeToEdit),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      if (deleteRequest.status !== 200) {
+        throw Error("Delete Request NOT Working!")
+      }
+      const deleteResponse = await deleteRequest.json();
+      const deletedEmployeeArray = this.state.employees.filter((employee) => {
+        return employee._id !== id
+      });
+      this.setState({
+        employees: deletedEmployeeArray
+      });
+    } catch(err) {
+      console.log(err, "Delete Request NOT Working!")
+    }
+  };
   render(){
-    const { employees } = this.state
+    const { employees, showEditModal, employeeToEdit } = this.state
     return(
       <div>
-        <EmployeeList employees={employees} />
+        <EmployeeList employees={employees} showModal={this.showModal} deleteEmployee={this.deleteEmployee}/>
         <CreateEmployee addEmployee={this.addEmployee}/>
+        {showEditModal ? <EditEmployee closeAndEdit={this.closeAndEdit} employeeToEdit={employeeToEdit} handleFormChange={this.handleFormChange} /> : null}
       </div>
     )
   };
